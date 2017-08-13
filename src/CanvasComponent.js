@@ -15,7 +15,7 @@ export default class CanvasComponent extends Component {
     }
     componentDidMount(){
         this.drawClock();
-        let interval = setInterval(() =>{
+        setInterval(() =>{
             this.updateTime();
         }, 500);
     }
@@ -29,21 +29,20 @@ export default class CanvasComponent extends Component {
     updateTime(){
         const {seconds, minutes, hours} = this.state;
         let newSeconds = seconds, newMinutes = minutes, newHours = hours;
-        if(parseInt(seconds) + 1 > 59){
+        if(seconds + 1 > 59){
             newSeconds = 0;
-            newMinutes = parseInt(minutes) + 1;
-            if(parseInt(minutes) + 1 > 59){
+            newMinutes = minutes + 1;
+            if(minutes + 1 > 59){
                 newMinutes = 0;
-                newHours = parseInt(hours) + 1;
-                if(parseInt(hours) + 1 > 12){
+                newHours = hours + 1;
+                if(hours + 1 > 12){
                     newHours = 1;
                 }
             }
         }
         else {
-            newSeconds = parseInt(seconds) + 1;
+            newSeconds = seconds + 1;
         }
-        console.log('update time:', newHours + " : " + newMinutes + " : " + newSeconds);
 
         this.setState({
             seconds: newSeconds,
@@ -116,8 +115,6 @@ export default class CanvasComponent extends Component {
     }
     render(){
         const {width, height} = this.props;
-        const {seconds, minutes, hours} = this.state;
-        console.log(hours + " : " + minutes + " : " + seconds);
         return (
             <canvas ref="canvas" width={width} height={height}/>
         );
