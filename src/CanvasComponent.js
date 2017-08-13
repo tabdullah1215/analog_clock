@@ -22,6 +22,7 @@ export default class CanvasComponent extends Component {
     updateCanvas(){
         this.clearCanvas();
         this.drawClock();
+        this.drawNumbers();
         this.drawSecondHand();
         this.drawMinuteHand();
         this.drawHourHand();
@@ -73,6 +74,27 @@ export default class CanvasComponent extends Component {
         ctx.lineWidth = 4;
         ctx.stroke();
 
+    }
+    drawNumbers() {
+        let {height} = this.props;
+        const ctx = this.refs.canvas.getContext("2d");
+        let theta;
+        const radius = (height / 2) * 0.9;
+
+        ctx.font = radius * 0.15 + "px arial";
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+        ctx.fillStyle = "black";
+        for(let num = 12; num > 0; num -= 3){
+            theta = num * (2 * Math.PI) / 12;
+            ctx.rotate(theta);
+            ctx.translate(0, -radius * 0.85);
+            ctx.rotate(-theta);
+            ctx.fillText(num.toString(), 0, 0);
+            ctx.rotate(theta);
+            ctx.translate(0, radius * 0.85);
+            ctx.rotate(-theta);
+        }
     }
     drawSecondHand(){
         let {height, origin} = this.props;
