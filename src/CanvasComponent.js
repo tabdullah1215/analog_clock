@@ -79,7 +79,7 @@ export default class CanvasComponent extends Component {
         let {height, origin} = this.props;
         let {seconds} = this.state;
         const ctx = this.refs.canvas.getContext("2d");
-        const theta = (seconds/60) * (2*Math.PI);
+        const theta = ((seconds/60) * (2*Math.PI)) - (Math.PI/2);
 
         const handLength = (height/2) * 0.70;
         ctx.moveTo(origin.x, origin.y);
@@ -91,7 +91,7 @@ export default class CanvasComponent extends Component {
         let {height, origin} = this.props;
         let {minutes} = this.state;
         const ctx = this.refs.canvas.getContext("2d");
-        const theta = (minutes/60) * (2*Math.PI);
+        const theta = ((minutes/60) * (2*Math.PI)) - (Math.PI/2);
 
         const handLength = (height/2) * 0.60;
         ctx.moveTo(origin.x, origin.y);
@@ -103,7 +103,7 @@ export default class CanvasComponent extends Component {
         let {height, origin} = this.props;
         let {hours} = this.state;
         const ctx = this.refs.canvas.getContext("2d");
-        const theta = (hours/12) * (2*Math.PI);
+        const theta = ((hours/12) * (2*Math.PI)) - (Math.PI/2);
 
         const handLength = (height/2) * 0.50;
         ctx.moveTo(origin.x, origin.y);
