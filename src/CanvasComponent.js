@@ -23,6 +23,8 @@ export default class CanvasComponent extends Component {
         this.clearCanvas();
         this.drawClock();
         this.drawSecondHand();
+        this.drawMinuteHand();
+        this.drawHourHand();
     }
     updateTime(){
         const {seconds, minutes, hours} = this.state;
@@ -80,6 +82,30 @@ export default class CanvasComponent extends Component {
         const theta = (seconds/60) * (2*Math.PI);
 
         const handLength = (height/2) * 0.70;
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+    }
+    drawMinuteHand(){
+        let {height, origin} = this.props;
+        let {minutes} = this.state;
+        const ctx = this.refs.canvas.getContext("2d");
+        const theta = (minutes/60) * (2*Math.PI);
+
+        const handLength = (height/2) * 0.60;
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+    }
+    drawHourHand(){
+        let {height, origin} = this.props;
+        let {hours} = this.state;
+        const ctx = this.refs.canvas.getContext("2d");
+        const theta = (hours/12) * (2*Math.PI);
+
+        const handLength = (height/2) * 0.50;
         ctx.moveTo(origin.x, origin.y);
         ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
         ctx.strokeStyle = "red";
