@@ -8,15 +8,16 @@ export default class CanvasComponent extends Component {
     constructor(props){
         super(props);
         this.state={
-            theta: -Math.PI/2
+            seconds: 0,
+            minutes: 58,
+            hours: 12
         }
     }
     componentDidMount(){
-        const {width, height} = this.props;
         this.drawClock();
         let interval = setInterval(() =>{
             this.updateTime();
-        }, 1000);
+        }, 500);
     }
     updateCanvas(){
         this.clearCanvas();
@@ -24,22 +25,32 @@ export default class CanvasComponent extends Component {
         this.drawSecondHand();
     }
     updateTime(){
-        const {theta} = this.state;
-        let newTheta;
-        const inc = (1/60) * 2*Math.PI;
-        // if(theta + 0.1 > 2*Math.PI){
-        //     newTheta = (theta - 2*Math.PI) + inc;
-        // }
-        //else {
-            newTheta = theta + inc;
-        //}
+        const {seconds, minutes, hours} = this.state;
+        let newSeconds = seconds, newMinutes = minutes, newHours = hours;
+        if(parseInt(seconds) + 1 > 59){
+            newSeconds = 0;
+            newMinutes = parseInt(minutes) + 1;
+            if(parseInt(minutes) + 1 > 59){
+                newMinutes = 0;
+                newHours = parseInt(hours) + 1;
+                if(parseInt(hours) + 1 > 12){
+                    newHours = 1;
+                }
+            }
+        }
+        else {
+            newSeconds = parseInt(seconds) + 1;
+        }
+        console.log('update time:', newHours + " : " + newMinutes + " : " + newSeconds);
 
         this.setState({
-            theta: newTheta
+            seconds: newSeconds,
+            minutes: newMinutes,
+            hours: newHours
         });
     }
     clearCanvas(){
-        let {theta, height, width} = this.props;
+        let {height, width} = this.props;
         const ctx = this.refs.canvas.getContext("2d");
         const offset = height / 2;
         ctx.translate(-offset, -offset);
@@ -49,7 +60,7 @@ export default class CanvasComponent extends Component {
     }
 
     drawClock(){
-        let {theta, height, width} = this.props;
+        let {height} = this.props;
         const ctx = this.refs.canvas.getContext("2d");
         const offset = height / 2;
 
@@ -63,9 +74,10 @@ export default class CanvasComponent extends Component {
 
     }
     drawSecondHand(){
-        let {initialTheta, height, width, origin} = this.props;
-        let {theta} = this.state;
+        let {height, origin} = this.props;
+        let {seconds} = this.state;
         const ctx = this.refs.canvas.getContext("2d");
+        const theta = (seconds/60) * (2*Math.PI);
 
         const handLength = (height/2) * 0.70;
         ctx.moveTo(origin.x, origin.y);
@@ -78,6 +90,8 @@ export default class CanvasComponent extends Component {
     }
     render(){
         const {width, height} = this.props;
+        const {seconds, minutes, hours} = this.state;
+        console.log(hours + " : " + minutes + " : " + seconds);
         return (
             <canvas ref="canvas" width={width} height={height}/>
         );
