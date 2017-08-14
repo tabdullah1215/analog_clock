@@ -72,6 +72,7 @@ export default class CanvasComponent extends Component {
         ctx.fillStyle = "bisque";
         ctx.fill();
         ctx.lineWidth = 4;
+        ctx.strokeStyle = "red";
         ctx.stroke();
 
     }
@@ -122,9 +123,9 @@ export default class CanvasComponent extends Component {
     }
     drawHourHand(){
         let {height, origin} = this.props;
-        let {hours} = this.state;
+        let {hours, minutes} = this.state;
         const ctx = this.refs.canvas.getContext("2d");
-        const theta = ((hours/12) * (2*Math.PI)) - (Math.PI/2);
+        const theta = (((hours + (minutes/60))/12 ) * (2*Math.PI)) - (Math.PI/2);
 
         const handLength = (height/2) * 0.50;
         ctx.moveTo(origin.x, origin.y);
