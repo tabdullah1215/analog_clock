@@ -17,15 +17,16 @@ export default class CanvasComponent extends Component {
         this.drawClock();
         setInterval(() =>{
             this.updateTime();
-        }, 500);
+        }, 50);
     }
     updateCanvas(){
+        const {seconds, minutes, hours} = this.state;
         this.clearCanvas();
         this.drawClock();
         this.drawNumbers();
-        this.drawSecondHand();
-        this.drawMinuteHand();
-        this.drawHourHand();
+        this.drawHand(seconds/60, 0.70);
+        this.drawHand(minutes/60, 0.60);
+        this.drawHand((hours + (minutes/60))/12, 0.50);
     }
     updateTime(){
         const {seconds, minutes, hours} = this.state;
@@ -74,8 +75,8 @@ export default class CanvasComponent extends Component {
         ctx.lineWidth = 4;
         ctx.strokeStyle = "red";
         ctx.stroke();
-
     }
+
     drawNumbers() {
         let {height} = this.props;
         const ctx = this.refs.canvas.getContext("2d");
@@ -97,42 +98,18 @@ export default class CanvasComponent extends Component {
             ctx.rotate(-theta);
         }
     }
-    drawSecondHand(){
-        let {height, origin} = this.props;
-        let {seconds} = this.state;
-        const ctx = this.refs.canvas.getContext("2d");
-        const theta = ((seconds/60) * (2*Math.PI)) - (Math.PI/2);
 
-        const handLength = (height/2) * 0.70;
+    drawHand(angleFraction, lengthFraction){
+        let {height, origin} = this.props;
+        const ctx = this.refs.canvas.getContext("2d");
+        const theta = ((angleFraction) * (2*Math.PI)) - (Math.PI/2);
+        const handLength = (height/2) * lengthFraction;
         ctx.moveTo(origin.x, origin.y);
         ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
         ctx.strokeStyle = "red";
         ctx.stroke();
     }
-    drawMinuteHand(){
-        let {height, origin} = this.props;
-        let {minutes} = this.state;
-        const ctx = this.refs.canvas.getContext("2d");
-        const theta = ((minutes/60) * (2*Math.PI)) - (Math.PI/2);
 
-        const handLength = (height/2) * 0.60;
-        ctx.moveTo(origin.x, origin.y);
-        ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-    }
-    drawHourHand(){
-        let {height, origin} = this.props;
-        let {hours, minutes} = this.state;
-        const ctx = this.refs.canvas.getContext("2d");
-        const theta = (((hours + (minutes/60))/12 ) * (2*Math.PI)) - (Math.PI/2);
-
-        const handLength = (height/2) * 0.50;
-        ctx.moveTo(origin.x, origin.y);
-        ctx.lineTo(handLength * Math.cos(theta), handLength * Math.sin(theta));
-        ctx.strokeStyle = "red";
-        ctx.stroke();
-    }
     componentDidUpdate(){
         this.updateCanvas();
     }
