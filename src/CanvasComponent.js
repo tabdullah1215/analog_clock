@@ -46,6 +46,12 @@ export default class CanvasComponent extends Component {
             newSeconds = seconds + 1;
         }
 
+        //uncomment this and put above code block inside comments to map clock state to current time
+        // const currentTime = new Date();
+        // const newSeconds = currentTime.getSeconds();
+        // const newMinutes = currentTime.getMinutes();
+        // const newHours = currentTime.getHours();
+
         this.setState({
             seconds: newSeconds,
             minutes: newMinutes,
